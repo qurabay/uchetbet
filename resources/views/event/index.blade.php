@@ -32,7 +32,11 @@
                 <tr>
                     <td>{{ $loop->index + 1 }}</td>
                     <td>
+                        <a href="{{ route('event-detail.show', $item->id)}}">
                         Событие - {{ $item->created_at->format('d-m-Y') }}
+                
+                        </a>
+
                     </td>
                     <td>{{ $item->bank }}</td>
                     <td>{{ $item->goal }}</td>
