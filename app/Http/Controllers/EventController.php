@@ -45,7 +45,6 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required',
             'bank'  => 'required|integer',
             'goal'  => 'required|integer',
         ]);
