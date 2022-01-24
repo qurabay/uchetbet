@@ -16,10 +16,12 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>Название</th>
+            <th>Событие</th>
             <th>Банк</th>
             <th>Цель</th>
+            <th>Букмекерская контора</th>
             <th>Статус</th>
+            <th>Действие</th>
             <th>Кол-во ставок</th>
             <th>Создана</th>
         </tr>
@@ -30,13 +32,26 @@
                 <tr>
                     <td>{{ $loop->index + 1 }}</td>
                     <td>
-                        <a href="{{ route('event-detail.show', $item->id)}}">
-                            {{ $item->title }}
-                        </a>
+                        Событие - {{ $item->created_at->format('d-m-Y') }}
                     </td>
                     <td>{{ $item->bank }}</td>
                     <td>{{ $item->goal }}</td>
+                    <td>
+                        {{ $item->bet }}
+                    </td>
                     <td>{{ $item->status == 1 ? 'Открыто' : 'Закрыто' }}</td>
+                    <td>
+                        @if($item->status == 1)
+                        <form action="{{ route('event.changeStatus', $item->id)}}" method="POST">
+                            @csrf 
+
+                            <div class="form-group">
+                                <button type="submit" >Закрыть</button>
+                            </div>
+                            
+                        </form>
+                        @endif
+                    </td>
                     <td>{{ $item->details_count }}</td>
                     <td>{{ $item->created_at }}</td>
                 </tr>
@@ -62,16 +77,20 @@
       <div class="modal-body">
        
             <div class="form-group">
-                <label >Название</label>
-                <input type="text" class="form-control"  name="title">
-            </div>
-            <div class="form-group">
                 <label >Банк</label>
                 <input type="text" class="form-control"  name="bank">
             </div>
             <div class="form-group">
                 <label >Цель</label>
                 <input type="text" class="form-control"  name="goal">
+            </div>
+            <div class="form-group">
+                <label >БК</label>
+                <select name="bet" class="form_control">
+                    <option value="1xbet">1xbet</option>
+                    <option value="fonbet">Fonbet</option>
+                    <option value="parimatch">Parimatch</option>
+                </select>
             </div>
             <input type="hidden" name="status" value="1">
         

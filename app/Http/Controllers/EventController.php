@@ -7,6 +7,11 @@ use App\Models\Event;
 
 class EventController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +19,7 @@ class EventController extends Controller
      */
     public function index()
     {
-        $event = Event::withCount('details')->get();
+        $event = Event::withCount('details')->orderBy('id','DESC')->get();
 
         return view('event.index',[
             'event' => $event
@@ -93,5 +98,15 @@ class EventController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function changeStatus(Event $event, Request $request)
+    {
+       
+        if($event) {
+            $event->update(['status' => 0]);
+        }
+
+        return redirect()->back()->with('success','Успешно статус изменено');
     }
 }

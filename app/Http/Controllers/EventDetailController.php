@@ -8,6 +8,13 @@ use Illuminate\Http\Request;
 
 class EventDetailController extends Controller
 {
+
+
+    public function __construct()
+    {
+        $this->middleware(['auth']);
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -50,7 +57,9 @@ class EventDetailController extends Controller
     
     public function show($id)
     {
-        $event = Event::findOrFail($id);
+        $event = Event::where('id',$id)->with(['details' => function($query) {
+            $query->orderBy('id','DESC');
+        }])->first();
         return view('event.detail',[
             'event' => $event
         ]);

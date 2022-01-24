@@ -18,7 +18,12 @@ use App\Http\Controllers\LoginController;
 Route::get('/', [LoginController::class, 'index']);
 Route::resource('event', EventController::class);
 
+Route::post('event/changestatus/{event}', [
+    EventController::class, 'changeStatus'
+])->name('event.changeStatus');
+
 Route::resource('event-detail', EventDetailController::class);
+
 
 Route::post('event-detail/changestatus/{eventDetail}', [
     EventDetailController::class, 'changeStatus'

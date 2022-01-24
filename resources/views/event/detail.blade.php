@@ -9,9 +9,12 @@
 </button>
     </h1>
     <p><h5>Начальный банк:<span class="badge badge-info">{{ $event->bank}} </span> KZT</h5></p>
-    <p><h5>Осталось заработать:<span class="badge badge-warning">{{ $event->bank - $event->countSum($event->id, 'win','show')}} </span> KZT</h5></p>
-    <p><h5>Чистая прибыль:  <span class="badge badge-success">  {{ $event->countSum($event->id, 'win')}}</span> KZT</h5></p>
-    <p><h5>Минус:   <span class="badge badge-danger">  {{ $event->countSum($event->id, 'failed')}}</span> KZT</h5></p>
+
+    <p><h5>Кол-во ставок: <span class="badge badge-dark"> {{ count($event->details) }} </span> </h5></p>
+    <p><h5>Плюс: <span class="badge badge-success"> {{ ($event->countBet($event->id,'win')) }} </span> </h5></p>
+    <p><h5>Минус: <span class="badge badge-danger"> {{ ($event->countBet($event->id,'failed')) }} </span> </h5></p>
+
+    <p><h5>Чистая прибыль:  <span class="badge badge-success">  {{ $event->countSum($event->id, 'win')-$event->countSum($event->id, 'failed')}}</span> KZT</h5></p>
 
 @stop
 
@@ -64,6 +67,7 @@
         
                     </td>
                     <td>
+                        @if($item->type != 'win' && $item->type != 'failed')
                         <form action="{{ route('event-detail.changeStatus', $item->id)}}" method="POST">
                             @csrf 
 
@@ -78,6 +82,7 @@
                             </div>
                             
                         </form>
+                        @endif
                     </td>
                     
                     <td>{{ $item->created_at }}</td>

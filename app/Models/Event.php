@@ -26,15 +26,13 @@ class Event extends Model
         $sum = array();
 
         if($fullBank == 'show') {
-            foreach($event->details as $item) 
-            {
+            foreach($event->details as $item) {
                 $sum[] = ($item->bank * $item->odds);
             }
             return (array_sum($sum));
         }
-        foreach($event->details as $item) 
-        {
-           if($option == 'win'){
+        foreach($event->details as $item){
+           if($option == 'win') {
                 $sum[] = ($item->bank * $item->odds) - $item->bank;
            }else {
                 $sum[] = $item->bank;
@@ -42,5 +40,13 @@ class Event extends Model
         }
 
         return (array_sum($sum));
+    }
+
+    public function countBet($id, $option)
+    {
+        $event = Event::where('id', $id)->withCount(['details' => function($query) use($option) {
+            $query->where('type',$option);
+        }])->first();
+        return ($event->details_count);
     }
 }

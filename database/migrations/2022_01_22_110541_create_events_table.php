@@ -15,10 +15,14 @@ class CreateEventsTable extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
             $table->float('bank');
             $table->float('goal');
             $table->integer('status')->default(0);
+            $table->enum('bet',[
+                '1xbet',
+                'parimatch',
+                'fonbet'
+            ]);
             $table->timestamps();
         });
     }
